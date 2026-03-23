@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariel Keen Exercise</title>
+<style>
+  :root {
+    --bg:            #f4efe6;
+    --bg-deep:       #efe5d5;
+    --surface:       rgba(255, 251, 245, 0.92);
+    --surface-warm:  #fffaf0;
+    --surface-soft:  #f3d6bf;
+    --border:        rgba(97, 70, 52, 0.16);
+    --border-strong: rgba(177, 77, 47, 0.28);
+    --text:          #1f2933;
+    --text-secondary:#1f2933;
+    --muted:         #5c6b73;
+    --charcoal:      #1f2933;
+    --amber:         #b14d2f;
+    --amber-dark:    #7f2f1b;
+    --amber-subtle:  rgba(177, 77, 47, 0.18);
+    --maroon:        #7f2f1b;
+    --maroon-soft:   #9a4429;
+    --cream:         #fffaf0;
+    --shadow-lg:     0 24px 60px rgba(74, 49, 30, 0.12);
+    --shadow-md:     0 14px 36px rgba(74, 49, 30, 0.08);
+    --error:         #B83232;
+    --error-bg:      #FDF2F1;
+    --success-text:  #276344;
+    --success-bg:    #EDF7F1;
+    --success-border:#A8D5BB;
+    --warn-text:     #7A5C1E;
+    --warn-bg:       #FBF6E9;
+    --warn-border:   #E2CFA0;
+    --grid-label-bg: #F0EFEA;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    margin: 0;
+    font-family: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+    background:
+      radial-gradient(circle at top left, rgba(177, 77, 47, 0.18), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(99, 125, 109, 0.14), transparent 32%),
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 45%, #f9f4eb 100%);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background:
+      linear-gradient(135deg, rgba(177, 77, 47, 0.12), rgba(255, 248, 240, 0.68));
+    width: min(1540px, calc(100vw - 32px));
+    margin: 28px auto 18px;
+    padding: 32px;
+    text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+  header::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    bottom: -40px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(177,77,47,0.18), rgba(177,77,47,0));
+    filter: blur(2px);
+  }
+  header h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.85rem;
+    color: var(--charcoal);
+    position: relative;
+    z-index: 1;
+  }
+  header p {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    color: var(--amber-dark);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: min(1540px, calc(100vw - 32px));
+    margin: 0 auto 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 12px 18px;
+    background: rgba(255, 248, 240, 0.75);
+    color: var(--muted);
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 0.92rem;
+    font-weight: 600;
+    font-family: inherit;
+    border-radius: 999px;
+    transition: color 0.18s, background 0.18s, transform 0.18s, box-shadow 0.18s;
+    letter-spacing: 0.01em;
+  }
+  .tab-btn:hover {
+    color: var(--charcoal);
+    transform: translateY(-1px);
+  }
+  .tab-btn.active {
+    color: #fffaf4;
+    background: var(--amber);
+    box-shadow: 0 10px 24px rgba(127,47,27,0.18);
+  }
+
+  /* ── Layout ── */
+  .container {
+    width: min(1540px, calc(100vw - 32px));
+    margin: 0 auto;
+    padding: 0 0 3rem;
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  /* ── Instructions ── */
+  .instructions-card {
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    max-width: 980px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(10px);
+  }
+  .instructions-card h2 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 1rem;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .instructions-card h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-top: 1.6rem;
+    margin-bottom: 0.55rem;
+  }
+  .instructions-card p {
+    margin-bottom: 0.75rem;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .instructions-card .good-luck {
+    margin-top: 1.5rem;
+    font-style: italic;
+    color: var(--amber-dark);
+    font-size: 0.98rem;
+  }
+
+  /* ── Query Grid ── */
+  .query-scroll {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(10px);
+  }
+  .query-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) repeat(6, minmax(165px, 210px));
+    gap: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 0.855rem;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+  }
+  .query-grid .cell {
+    padding: 0.72rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    background: rgba(255, 248, 240, 0.58);
+  }
+  .query-grid .cell:last-child { border-right: none; }
+
+  .query-grid .header {
+    background: rgba(177, 77, 47, 0.12);
+    color: var(--amber-dark);
+    font-weight: 600;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .query-grid .label {
+    background: rgba(255, 248, 240, 0.82);
+    color: var(--charcoal);
+    font-size: 0.86rem;
+    border-right-color: var(--border-strong);
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.24rem;
+    line-height: 1.35;
+  }
+  .query-grid .label-title {
+    font-weight: 700;
+    color: var(--charcoal);
+  }
+  .query-grid .label-hint {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  .query-grid input, .query-grid select {
+    width: 100%;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: var(--text);
+    background: #ffffff;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .query-grid select {
+    min-width: 0;
+  }
+  .query-grid input:focus, .query-grid select:focus {
+    outline: 2px solid var(--amber-subtle);
+    border-color: rgba(177, 77, 47, 0.5);
+    box-shadow: none;
+    background: var(--surface);
+  }
+  .query-grid input.has-error {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  .error-row {
+    font-size: 0.71rem;
+    color: var(--error);
+    min-height: 1.1rem;
+    padding: 0.06rem 0.75rem 0.15rem;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .error-row:last-child { border-right: none; }
+
+  /* Result rows */
+  .rank-cell {
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    background: rgba(255, 248, 240, 0.78);
+  }
+  .rank-1 { color: var(--maroon); }
+  .rank-2 { color: var(--amber-dark); }
+  .rank-3 { color: #7f5d46; }
+
+  .points-cell {
+    justify-content: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--charcoal);
+    background: rgba(255, 248, 240, 0.78);
+  }
+
+  .note {
+    font-size: 0.84rem;
+    color: var(--text-secondary);
+    margin-top: 1rem;
+    font-style: italic;
+    text-align: center;
+  }
+
+  /* ── Negotiation Support ── */
+  .scoring-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  @media (max-width: 700px) { .scoring-grid { grid-template-columns: 1fr; } }
+
+  .issue-card {
+    background: rgba(255, 248, 240, 0.82);
+    border-radius: 16px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+  }
+  .issue-card h3 {
+    font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .issue-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0;
+  }
+  .issue-row span { font-size: 0.875rem; color: #3D3C39; }
+  .issue-row .score {
+    font-weight: 600;
+    color: var(--charcoal);
+    min-width: 36px;
+    text-align: right;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .weight-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.8rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border);
+  }
+  .weight-input-row label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .weight-input, .score-input {
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    font-size: 0.875rem;
+    font-family: inherit;
+    color: var(--text);
+    background: #ffffff;
+    text-align: center;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .weight-input { width: 78px; }
+  .score-input  { width: 68px; }
+  .weight-input:focus, .score-input:focus {
+    outline: 2px solid var(--amber-subtle);
+    border-color: rgba(177, 77, 47, 0.5);
+    box-shadow: none;
+    background: var(--surface);
+  }
+  .weight-input.has-error, .score-input.has-error {
+    border-color: var(--error);
+    background: var(--error-bg);
+  }
+  .input-error {
+    font-size: 0.71rem;
+    color: var(--error);
+    margin-top: 0.2rem;
+  }
+
+  /* ── Status Banner ── */
+  .status-banner {
+    padding: 14px 16px;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid var(--border);
+    box-shadow: none;
+  }
+  .status-banner.incomplete {
+    background: var(--warn-bg);
+    color: var(--warn-text);
+    border-color: var(--warn-border);
+  }
+  .status-banner.complete {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border-color: var(--success-border);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1000px) {
+    .query-grid { font-size: 0.8rem; }
+    .query-grid .cell { padding: 0.4rem 0.5rem; }
+  }
+  @media (max-width: 850px) {
+    .query-scroll { overflow-x: auto; }
+    .query-grid { min-width: 1380px; }
+  }
+  @media (max-width: 700px) {
+    header {
+      width: min(100vw - 20px, 1540px);
+      margin-top: 18px;
+      padding: 20px;
+    }
+    .container {
+      width: min(100vw - 20px, 1540px);
+      padding: 0 0 2.25rem;
+    }
+    .instructions-card {
+      padding: 20px;
+      border-radius: 20px;
+    }
+    .tabs {
+      width: min(100vw - 20px, 1540px);
+    }
+    .tab-btn {
+      width: auto;
+    }
+    .query-scroll {
+      padding: 16px;
+      border-radius: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Ariel Keen Exercise</h1>
+  <p>MGT 6400: Managerial Decision Making</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('instructions')">Instructions</button>
+  <button class="tab-btn" onclick="switchTab('query')">Propose Some Offers to Ariel</button>
+  <button class="tab-btn" onclick="switchTab('support')">Negotiation Support</button>
+</div>
+
+<!-- ========== INSTRUCTIONS ========== -->
+<div id="tab-instructions" class="tab-content active">
+  <div class="container">
+    <div class="instructions-card">
+      <h2>Instructions</h2>
+      <p>This tool serves two purposes:</p>
+      <p>&#8226; It allows you to <strong>"propose" multiple potential offers to Ariel Keen</strong>, and Ariel will let you know which offer she prefers (as indicated by how she ranks them).</p>
+      <p>&#8226; Once you have queried Ariel enough to determine a reasonably accurate scoring system, you can use this scoring system to <strong>score potential deals</strong> she may face.</p>
+
+      <h3>Propose Some Offers to Ariel</h3>
+      <p>The <strong>Propose Some Offers to Ariel</strong> tab allows you to enter up to six potential deals. Please attend to the error messages to make sure that you have entered the deals properly. Once the deals have been entered without errors, you will see the ranking of each of the deals from 1 (best) to 6 (worst). If two deals are tied, they will receive the same rank.</p>
+      <p>You do not have to enter 6 deals. You can enter any number of deals you like. Only the complete, error-free deals are ranked. Also note that you can enter deals without specifically assigning weights (to learn Ariel's preference ordering).</p>
+      <p>You should think of this part of the tool as simulating the process of asking yourself questions about possible deals. The aim of these questions is to help you understand your preferences, and eventually determine the missing values from the scoring system.</p>
+
+      <h3>Negotiation Support</h3>
+      <p>Once you have asked enough questions, you should feel comfortable providing the missing weights and scores for intermediate values (such as the score for Atlanta). Enter these in the <strong>Negotiation Support</strong> tab. Once all the scores are entered, you can see the point scores of all deals described on the Propose Some Offers tab.</p>
+
+      <p class="good-luck">Good luck!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QUERY ========== -->
+<div id="tab-query" class="tab-content">
+  <div class="container">
+    <div class="query-scroll">
+      <div class="query-grid" id="queryGrid">
+        <!-- Header row -->
+        <div class="cell header"></div>
+        <div class="cell header">Offer 1</div>
+        <div class="cell header">Offer 2</div>
+        <div class="cell header">Offer 3</div>
+        <div class="cell header">Offer 4</div>
+        <div class="cell header">Offer 5</div>
+        <div class="cell header">Offer 6</div>
+
+        <!-- Salary row -->
+        <div class="cell label"><span class="label-title">Salary ($K)</span><span class="label-hint">Enter a value between 340 and 480</span></div>
+        <div class="cell"><input type="number" id="salary_1" min="340" max="480" step="1" oninput="validate()"></div>
+        <div class="cell"><input type="number" id="salary_2" min="340" max="480" step="1" oninput="validate()"></div>
+        <div class="cell"><input type="number" id="salary_3" min="340" max="480" step="1" oninput="validate()"></div>
+        <div class="cell"><input type="number" id="salary_4" min="340" max="480" step="1" oninput="validate()"></div>
+        <div class="cell"><input type="number" id="salary_5" min="340" max="480" step="1" oninput="validate()"></div>
+        <div class="cell"><input type="number" id="salary_6" min="340" max="480" step="1" oninput="validate()"></div>
+
+        <!-- Loan row -->
+        <div class="cell label"><span class="label-title">Loan</span><span class="label-hint">Loan or No Loan</span></div>
+        <div class="cell"><select id="loan_1" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+        <div class="cell"><select id="loan_2" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+        <div class="cell"><select id="loan_3" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+        <div class="cell"><select id="loan_4" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+        <div class="cell"><select id="loan_5" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+        <div class="cell"><select id="loan_6" onchange="validate()"><option value="">—</option><option value="L">Loan</option><option value="N">No Loan</option></select></div>
+
+        <!-- Office row -->
+        <div class="cell label"><span class="label-title">Office</span><span class="label-hint">Atlanta, Boston, or Chicago</span></div>
+        <div class="cell"><select id="office_1" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+        <div class="cell"><select id="office_2" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+        <div class="cell"><select id="office_3" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+        <div class="cell"><select id="office_4" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+        <div class="cell"><select id="office_5" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+        <div class="cell"><select id="office_6" onchange="validate()"><option value="">—</option><option value="A">Atlanta</option><option value="B">Boston</option><option value="C">Chicago</option></select></div>
+
+        <!-- Title row -->
+        <div class="cell label"><span class="label-title">Title</span><span class="label-hint">Senior Consultant or Consultant</span></div>
+        <div class="cell"><select id="title_1" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+        <div class="cell"><select id="title_2" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+        <div class="cell"><select id="title_3" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+        <div class="cell"><select id="title_4" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+        <div class="cell"><select id="title_5" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+        <div class="cell"><select id="title_6" onchange="validate()"><option value="">—</option><option value="SC">Senior Consultant</option><option value="C">Consultant</option></select></div>
+
+        <!-- Practice row -->
+        <div class="cell label"><span class="label-title">Practice</span><span class="label-hint">Technology, Financial Services, or Pharma</span></div>
+        <div class="cell"><select id="practice_1" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+        <div class="cell"><select id="practice_2" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+        <div class="cell"><select id="practice_3" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+        <div class="cell"><select id="practice_4" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+        <div class="cell"><select id="practice_5" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+        <div class="cell"><select id="practice_6" onchange="validate()"><option value="">—</option><option value="T">Technology</option><option value="F">Financial Services</option><option value="P">Pharmaceuticals</option></select></div>
+
+        <!-- Start Date row -->
+        <div class="cell label"><span class="label-title">Start Date</span><span class="label-hint">May 15, June 15, or July 15</span></div>
+        <div class="cell"><select id="date_1" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+        <div class="cell"><select id="date_2" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+        <div class="cell"><select id="date_3" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+        <div class="cell"><select id="date_4" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+        <div class="cell"><select id="date_5" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+        <div class="cell"><select id="date_6" onchange="validate()"><option value="">—</option><option value="515">May 15</option><option value="615">June 15</option><option value="715">July 15</option></select></div>
+
+        <!-- Spacer before results -->
+        <div style="grid-column:1/-1; background:var(--grid-label-bg); height:12px; border-bottom:2px solid var(--border-strong);"></div>
+
+        <!-- Rank row -->
+        <div class="cell label" style="background:var(--amber-dark);color:#fff7ee;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.05em;"><span class="label-title" style="color:inherit;">Ranking</span></div>
+        <div class="cell rank-cell" id="rank_1">—</div>
+        <div class="cell rank-cell" id="rank_2">—</div>
+        <div class="cell rank-cell" id="rank_3">—</div>
+        <div class="cell rank-cell" id="rank_4">—</div>
+        <div class="cell rank-cell" id="rank_5">—</div>
+        <div class="cell rank-cell" id="rank_6">—</div>
+
+        <!-- Points row -->
+        <div class="cell label" style="background:var(--amber-dark);color:#fff7ee;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.05em;"><span class="label-title" style="color:inherit;">Points (Your Scoring)</span></div>
+        <div class="cell points-cell" id="pts_1">—</div>
+        <div class="cell points-cell" id="pts_2">—</div>
+        <div class="cell points-cell" id="pts_3">—</div>
+        <div class="cell points-cell" id="pts_4">—</div>
+        <div class="cell points-cell" id="pts_5">—</div>
+        <div class="cell points-cell" id="pts_6">—</div>
+      </div>
+    </div>
+    <p class="note">The Ranking uses Ariel's true preferences. The Points row uses the scoring system you enter on the Negotiation Support tab.</p>
+  </div>
+</div>
+
+<!-- ========== NEGOTIATION SUPPORT ========== -->
+<div id="tab-support" class="tab-content">
+  <div class="container">
+    <div id="supportStatus" class="status-banner incomplete">
+      Scoring system is incomplete. Fill in all weights and the Atlanta score below.
+    </div>
+
+    <div class="scoring-grid">
+      <!-- Salary -->
+      <div class="issue-card">
+        <h3>Salary</h3>
+        <p style="font-size:0.78rem;color:var(--muted);margin-bottom:0.5rem;">Interpolate values for salaries other than those listed</p>
+        <div class="issue-row"><span>$480,000</span><span class="score">100</span></div>
+        <div class="issue-row"><span>$460,000</span><span class="score">90</span></div>
+        <div class="issue-row"><span>$440,000</span><span class="score">80</span></div>
+        <div class="issue-row"><span>$420,000</span><span class="score">70</span></div>
+        <div class="issue-row"><span>$400,000</span><span class="score">60</span></div>
+        <div class="issue-row"><span>$380,000</span><span class="score">40</span></div>
+        <div class="issue-row"><span>$360,000</span><span class="score">20</span></div>
+        <div class="issue-row"><span>$340,000</span><span class="score">0</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_salary" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_salary"></div>
+        </div>
+      </div>
+
+      <!-- Loan -->
+      <div class="issue-card">
+        <h3>Loan</h3>
+        <div class="issue-row"><span>Get Loan</span><span class="score">100</span></div>
+        <div class="issue-row"><span>No Loan</span><span class="score">0</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_loan" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_loan"></div>
+        </div>
+      </div>
+
+      <!-- Office -->
+      <div class="issue-card">
+        <h3>Office</h3>
+        <div class="issue-row">
+          <span>Atlanta</span>
+          <input type="number" class="score-input" id="s_atlanta" min="0" max="100" step="1" oninput="updateSupport()">
+        </div>
+        <div class="input-error" id="serr_atlanta" style="text-align:right;"></div>
+        <div class="issue-row"><span>Boston</span><span class="score">0</span></div>
+        <div class="issue-row"><span>Chicago</span><span class="score">100</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_office" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_office"></div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <div class="issue-card">
+        <h3>Title</h3>
+        <div class="issue-row"><span>Senior Consultant</span><span class="score">100</span></div>
+        <div class="issue-row"><span>Consultant</span><span class="score">0</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_title" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_title"></div>
+        </div>
+      </div>
+
+      <!-- Practice -->
+      <div class="issue-card">
+        <h3>Practice</h3>
+        <div class="issue-row"><span>Technology</span><span class="score">0</span></div>
+        <div class="issue-row"><span>Financial Services</span><span class="score">40</span></div>
+        <div class="issue-row"><span>Pharmaceuticals</span><span class="score">100</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_practice" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_practice"></div>
+        </div>
+      </div>
+
+      <!-- Start Date -->
+      <div class="issue-card">
+        <h3>Start Date</h3>
+        <div class="issue-row"><span>May 15</span><span class="score">0</span></div>
+        <div class="issue-row"><span>June 15</span><span class="score">90</span></div>
+        <div class="issue-row"><span>July 15</span><span class="score">100</span></div>
+        <div class="weight-input-row">
+          <label>Weight:</label>
+          <input type="number" class="weight-input" id="w_date" min="0" max="1" step="0.01" oninput="updateSupport()">
+          <div class="input-error" id="werr_date"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Ariel Keen's TRUE scoring system (from hidden AK score deals)
+// ============================================================
+const TRUE_WEIGHTS = {
+  salary: 0.8,
+  loan: 0.15,
+  office: 0.6,
+  title: 0.5,
+  practice: 1.0,
+  date: 0.2
+};
+
+const SALARY_POINTS = [
+  [340, 0], [360, 20], [380, 40], [400, 60],
+  [420, 70], [440, 80], [460, 90], [480, 100]
+];
+
+function salaryScore(k) {
+  if (k <= 340) return 0;
+  if (k >= 480) return 100;
+  for (let i = 0; i < SALARY_POINTS.length - 1; i++) {
+    const [s1, p1] = SALARY_POINTS[i];
+    const [s2, p2] = SALARY_POINTS[i + 1];
+    if (k >= s1 && k <= s2) {
+      return p1 + (k - s1) / (s2 - s1) * (p2 - p1);
+    }
+  }
+  return 0;
+}
+
+function loanScore(val) { return val === 'L' ? 100 : 0; }
+
+function officeScoreTrue(val) {
+  if (val === 'C') return 100;
+  if (val === 'A') return 65;
+  return 0;
+}
+
+function titleScore(val) { return val === 'SC' ? 100 : 0; }
+
+function practiceScore(val) {
+  if (val === 'P') return 100;
+  if (val === 'F') return 40;
+  return 0;
+}
+
+function dateScore(mdd) {
+  if (mdd <= 515) return 0;
+  if (mdd >= 715) return 100;
+  if (mdd === 615) return 90;
+  // Interpolation for any intermediate values
+  const may15 = new Date(2024, 4, 15);
+  const jun15 = new Date(2024, 5, 15);
+  const jul15 = new Date(2024, 6, 15);
+  const month = Math.floor(mdd / 100);
+  const day = mdd - month * 100;
+  const d = new Date(2024, month - 1, day);
+  if (d < jun15) return (d - may15) / (jun15 - may15) * 90;
+  return 90 + (d - jun15) / (jul15 - jun15) * 10;
+}
+
+function trueTotalScore(deal) {
+  return (
+    TRUE_WEIGHTS.salary * salaryScore(deal.salary) +
+    TRUE_WEIGHTS.loan * loanScore(deal.loan) +
+    TRUE_WEIGHTS.office * officeScoreTrue(deal.office) +
+    TRUE_WEIGHTS.title * titleScore(deal.title) +
+    TRUE_WEIGHTS.practice * practiceScore(deal.practice) +
+    TRUE_WEIGHTS.date * dateScore(deal.date)
+  );
+}
+
+// ============================================================
+// User's scoring system (from Negotiation Support tab)
+// ============================================================
+function getUserScoringSystem() {
+  const w_salary = parseFloat(document.getElementById('w_salary').value);
+  const w_loan = parseFloat(document.getElementById('w_loan').value);
+  const w_office = parseFloat(document.getElementById('w_office').value);
+  const w_title = parseFloat(document.getElementById('w_title').value);
+  const w_practice = parseFloat(document.getElementById('w_practice').value);
+  const w_date = parseFloat(document.getElementById('w_date').value);
+  const s_atlanta = parseFloat(document.getElementById('s_atlanta').value);
+
+  const vals = [w_salary, w_loan, w_office, w_title, w_practice, w_date, s_atlanta];
+  const complete = vals.every(v => !isNaN(v));
+  const valid = complete &&
+    w_salary >= 0 && w_salary <= 1 &&
+    w_loan >= 0 && w_loan <= 1 &&
+    w_office >= 0 && w_office <= 1 &&
+    w_title >= 0 && w_title <= 1 &&
+    w_practice >= 0 && w_practice <= 1 &&
+    w_date >= 0 && w_date <= 1 &&
+    s_atlanta >= 0 && s_atlanta <= 100;
+
+  return {
+    complete: complete && valid,
+    weights: { salary: w_salary, loan: w_loan, office: w_office, title: w_title, practice: w_practice, date: w_date },
+    atlanta: s_atlanta
+  };
+}
+
+function userOfficeScore(val, atlanta) {
+  if (val === 'C') return 100;
+  if (val === 'A') return atlanta;
+  return 0;
+}
+
+function userTotalScore(deal, sys) {
+  return (
+    sys.weights.salary * salaryScore(deal.salary) +
+    sys.weights.loan * loanScore(deal.loan) +
+    sys.weights.office * userOfficeScore(deal.office, sys.atlanta) +
+    sys.weights.title * titleScore(deal.title) +
+    sys.weights.practice * practiceScore(deal.practice) +
+    sys.weights.date * dateScore(deal.date)
+  );
+}
+
+// ============================================================
+// Validation & Scoring
+// ============================================================
+function getDeal(i) {
+  const salary = parseFloat(document.getElementById('salary_' + i).value);
+  const loan = document.getElementById('loan_' + i).value;
+  const office = document.getElementById('office_' + i).value;
+  const title = document.getElementById('title_' + i).value;
+  const practice = document.getElementById('practice_' + i).value;
+  const dateVal = document.getElementById('date_' + i).value;
+  const date = dateVal ? parseFloat(dateVal) : NaN;
+  return { salary, loan, office, title, practice, date };
+}
+
+function isDealComplete(deal) {
+  return !isNaN(deal.salary) && deal.loan && deal.office && deal.title && deal.practice && !isNaN(deal.date);
+}
+
+function validate() {
+  const validDeals = [];
+  const scores = [];
+
+  for (let i = 1; i <= 6; i++) {
+    const deal = getDeal(i);
+
+    const salaryEl = document.getElementById('salary_' + i);
+    const errSalary = document.getElementById('err_salary_' + i);
+
+    salaryEl.classList.remove('has-error');
+    if (errSalary) errSalary.textContent = '';
+
+    let hasError = false;
+
+    // Salary validation
+    if (salaryEl.value !== '' && (deal.salary < 340 || deal.salary > 480)) {
+      salaryEl.classList.add('has-error');
+      if (errSalary) errSalary.textContent = 'Enter 340–480';
+      hasError = true;
+    }
+
+    if (isDealComplete(deal) && !hasError) {
+      validDeals.push({ index: i, deal: deal });
+      scores.push({ index: i, score: trueTotalScore(deal) });
+    }
+  }
+
+  // Compute ranks
+  for (let i = 1; i <= 6; i++) {
+    const rankEl = document.getElementById('rank_' + i);
+    rankEl.textContent = '—';
+    rankEl.className = 'cell rank-cell';
+  }
+
+  if (scores.length > 0) {
+    scores.sort((a, b) => b.score - a.score);
+    let currentRank = 1;
+    for (let j = 0; j < scores.length; j++) {
+      if (j > 0 && scores[j].score < scores[j-1].score) {
+        currentRank = j + 1;
+      }
+      const rankEl = document.getElementById('rank_' + scores[j].index);
+      rankEl.textContent = currentRank;
+      if (currentRank === 1) rankEl.classList.add('rank-1');
+      else if (currentRank === 2) rankEl.classList.add('rank-2');
+      else if (currentRank === 3) rankEl.classList.add('rank-3');
+    }
+  }
+
+  updateUserPoints(validDeals);
+}
+
+function updateUserPoints(validDeals) {
+  const sys = getUserScoringSystem();
+
+  for (let i = 1; i <= 6; i++) {
+    const el = document.getElementById('pts_' + i);
+    el.textContent = '—';
+    el.style.fontSize = '';
+    el.style.color = '';
+  }
+
+  if (!sys.complete) {
+    for (let i = 1; i <= 6; i++) {
+      const deal = getDeal(i);
+      if (isDealComplete(deal)) {
+        const el = document.getElementById('pts_' + i);
+        el.textContent = 'Scoring Incomplete';
+        el.style.fontSize = '0.72rem';
+        el.style.color = 'var(--muted)';
+      }
+    }
+    return;
+  }
+
+  if (validDeals) {
+    for (const vd of validDeals) {
+      const pts = userTotalScore(vd.deal, sys);
+      const el = document.getElementById('pts_' + vd.index);
+      el.textContent = pts.toFixed(1);
+      el.style.fontSize = '0.95rem';
+      el.style.color = 'var(--primary)';
+    }
+  } else {
+    for (let i = 1; i <= 6; i++) {
+      const deal = getDeal(i);
+      if (isDealComplete(deal)) {
+        const pts = userTotalScore(deal, sys);
+        const el = document.getElementById('pts_' + i);
+        el.textContent = pts.toFixed(1);
+        el.style.fontSize = '0.95rem';
+        el.style.color = 'var(--primary)';
+      }
+    }
+  }
+}
+
+function updateSupport() {
+  const weightIds = ['w_salary', 'w_loan', 'w_office', 'w_title', 'w_practice', 'w_date'];
+  const weightNames = ['salary', 'loan', 'office', 'title', 'practice', 'date'];
+  let allValid = true;
+
+  for (let i = 0; i < weightIds.length; i++) {
+    const el = document.getElementById(weightIds[i]);
+    const errEl = document.getElementById('werr_' + weightNames[i]);
+    el.classList.remove('has-error');
+    if (errEl) errEl.textContent = '';
+    if (el.value !== '') {
+      const v = parseFloat(el.value);
+      if (isNaN(v) || v < 0 || v > 1) {
+        el.classList.add('has-error');
+        if (errEl) errEl.textContent = 'Must be 0–1';
+        allValid = false;
+      }
+    } else { allValid = false; }
+  }
+
+  const atlEl = document.getElementById('s_atlanta');
+  const atlErr = document.getElementById('serr_atlanta');
+  atlEl.classList.remove('has-error');
+  if (atlErr) atlErr.textContent = '';
+  if (atlEl.value !== '') {
+    const v = parseFloat(atlEl.value);
+    if (isNaN(v) || v < 0 || v > 100) {
+      atlEl.classList.add('has-error');
+      if (atlErr) atlErr.textContent = 'Must be 0–100';
+      allValid = false;
+    }
+  } else { allValid = false; }
+
+  const banner = document.getElementById('supportStatus');
+  if (allValid) {
+    banner.className = 'status-banner complete';
+    banner.textContent = 'Scoring system is complete. Check the Propose Some Offers tab to see point scores.';
+  } else {
+    banner.className = 'status-banner incomplete';
+    banner.textContent = 'Scoring system is incomplete. Fill in all weights and the Atlanta score below.';
+  }
+
+  validate();
+}
+
+// ============================================================
+// Tab switching
+// ============================================================
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  const tabNames = { instructions: 0, query: 1, support: 2 };
+  document.querySelectorAll('.tab-btn')[tabNames[tab]].classList.add('active');
+  if (tab === 'query') validate();
+}
+
+validate();
+</script>
+
+</body>
+</html>
